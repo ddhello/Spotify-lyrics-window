@@ -16,7 +16,6 @@ class LyricPage(QWidget, Ui_LyricsSettingsPage):
         self.setting_window = setting_window
         self.lyric_window = lyric_window
         self.setupUi(self)
-        self._init_translation_font_controls()
 
         self._init_radioButton()
         self._init_comboBox()
@@ -51,18 +50,6 @@ class LyricPage(QWidget, Ui_LyricsSettingsPage):
         self.color_comboBox.addItems(self.color_list)
         self.font_comboBox.addItems(self.font_family_list)
         self.translation_font_comboBox.addItems(self.font_family_list)
-
-    def _init_translation_font_controls(self):
-        self.font_label.setText(self.tr("歌词字体:"))
-        self.translation_font_label = QLabel(self.font_frame)
-        self.translation_font_label.setObjectName("translation_font_label")
-        self.translation_font_label.setText(self.tr("译文字体:"))
-        self.translation_font_comboBox = QComboBox(self.font_frame)
-        self.translation_font_comboBox.setObjectName("translation_font_comboBox")
-        self.translation_font_comboBox.setMinimumSize(QSize(0, 32))
-        self.translation_font_comboBox.setMaximumWidth(200)
-        self.font_verticalLayout.addWidget(self.translation_font_label)
-        self.font_verticalLayout.addWidget(self.translation_font_comboBox)
 
     def _init_radioButton(self):
         """初始化翻译按钮"""
