@@ -7,10 +7,9 @@ requests==2.33.1
 rtoml==0.13.0
 
 # Windows only
-
-winrt-runtime==3.2.1; sys_platform == "win32"
-winrt-Windows.Foundation==3.2.1; sys_platform == "win32"
-winrt-Windows.Foundation.Collections==3.2.1; sys_platform == "win32"
-winrt-Windows.Media.Control==3.2.1; sys_platform == "win32"
-winrt-Windows.Storage.Streams==3.2.1; sys_platform == "win32"
-winrt-Windows.System==3.2.1; sys_platform == "win32"
+winrt_runtime==3.0.0; sys_platform == "win32"
+winrt_windows_foundation==3.0.0; sys_platform == "win32"
+winrt_windows_foundation_collections==3.0.0; sys_platform == "win32"
+winrt_windows_media_control==3.0.0; sys_platform == "win32"
+winrt_windows_storage_streams==3.0.0; sys_platform == "win32"
+winrt_windows_system==3.0.0; sys_platform == "win32"
