@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
-from pathlib import Path
-
 import rtoml
+from pathlib import Path
 
 BASE_PATH = Path(__file__).parent.parent
 SETTING_TOML_PATH = BASE_PATH / Path(r"resource/setting.toml")
@@ -92,13 +91,12 @@ class Config:
     @classmethod
     def to_dict(cls) -> dict:
         """将当前配置装换为字典并返回"""
-
         def _save_config(last_cls, dic):
             attr_dict = last_cls.__dict__
             for attr in attr_dict.keys():
                 if not attr.startswith("_"):
                     value = getattr(last_cls, attr)
-                    if hasattr(value, "__dict__"):
+                    if hasattr(value, '__dict__'):
                         dic[attr] = {}
                         now_cls = getattr(last_cls, attr)
                         _save_config(now_cls, dic[attr])
@@ -122,7 +120,7 @@ class Config:
 Config.read_config()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     Config.read_config()
     Config.save_config()
     ...
