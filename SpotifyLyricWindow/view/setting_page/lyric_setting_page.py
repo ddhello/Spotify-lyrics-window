@@ -16,6 +16,7 @@ class LyricPage(QWidget, Ui_LyricsSettingsPage):
         self.setting_window = setting_window
         self.lyric_window = lyric_window
         self.setupUi(self)
+        self._init_translation_font_controls()
 
         self._init_radioButton()
         self._init_comboBox()
@@ -49,6 +50,19 @@ class LyricPage(QWidget, Ui_LyricsSettingsPage):
                                  "微软雅黑 Light", "新宋体", "方正姚体", "方正舒体", "楷体", "等线", "等线 Light", "隶书", "黑体"]
         self.color_comboBox.addItems(self.color_list)
         self.font_comboBox.addItems(self.font_family_list)
+        self.translation_font_comboBox.addItems(self.font_family_list)
+
+    def _init_translation_font_controls(self):
+        self.font_label.setText(self.tr("歌词字体:"))
+        self.translation_font_label = QLabel(self.font_frame)
+        self.translation_font_label.setObjectName("translation_font_label")
+        self.translation_font_label.setText(self.tr("译文字体:"))
+        self.translation_font_comboBox = QComboBox(self.font_frame)
+        self.translation_font_comboBox.setObjectName("translation_font_comboBox")
+        self.translation_font_comboBox.setMinimumSize(QSize(0, 32))
+        self.translation_font_comboBox.setMaximumWidth(200)
+        self.font_verticalLayout.addWidget(self.translation_font_label)
+        self.font_verticalLayout.addWidget(self.translation_font_comboBox)
 
     def _init_radioButton(self):
         """初始化翻译按钮"""
@@ -63,6 +77,7 @@ class LyricPage(QWidget, Ui_LyricsSettingsPage):
     def _init_signal(self):
         """初始化信号"""
         self.font_comboBox.currentIndexChanged.connect(self.font_change_event)
+        self.translation_font_comboBox.currentIndexChanged.connect(self.translation_font_change_event)
         self.color_comboBox.currentIndexChanged.connect(self.color_style_change_event)
         self.display_mode_comboBox.currentIndexChanged.connect(self.display_mode_change_event)
 
@@ -78,6 +93,7 @@ class LyricPage(QWidget, Ui_LyricsSettingsPage):
         """导入配置"""
         color_style = Config.LyricConfig.rgb_style
         font_family = Config.LyricConfig.font_family
+        translation_font_family = Config.LyricConfig.translation_font_family
         is_always_front = Config.LyricConfig.is_always_front
         trans_type = Config.LyricConfig.trans_type
         lyrics_color = Config.LyricConfig.lyric_color
@@ -89,6 +105,7 @@ class LyricPage(QWidget, Ui_LyricsSettingsPage):
         self._set_label_rgb(self.lyrics_color_label, lyrics_color)
         self._set_label_rgb(self.shadow_color_label, shadow_color)
         self.font_comboBox.setCurrentIndex(self.font_family_list.index(font_family))
+        self.translation_font_comboBox.setCurrentIndex(self.font_family_list.index(translation_font_family))
         self.display_mode_comboBox.setCurrentIndex(display_mode)
         self.trans_button_group.button(trans_type).setChecked(True)
 
@@ -97,6 +114,7 @@ class LyricPage(QWidget, Ui_LyricsSettingsPage):
         default_dict = Config.get_default_dict()["LyricConfig"]
 
         font_family = default_dict["font_family"]
+        translation_font_family = default_dict["translation_font_family"]
         color_style = default_dict["rgb_style"]
         is_always_front = default_dict["is_always_front"]
         trans_type = default_dict["trans_type"]
@@ -104,6 +122,7 @@ class LyricPage(QWidget, Ui_LyricsSettingsPage):
         self.enable_front_checkBox.setChecked(is_always_front)
         self.color_comboBox.setCurrentIndex(self.color_list.index(color_style))
         self.font_comboBox.setCurrentIndex(self.font_family_list.index(font_family))
+        self.translation_font_comboBox.setCurrentIndex(self.font_family_list.index(translation_font_family))
 
         self.trans_button_group.button(trans_type).setChecked(True)
         self.trans_change_event()
@@ -128,6 +147,12 @@ class LyricPage(QWidget, Ui_LyricsSettingsPage):
         # 同步到歌词窗口
         self.lyric_window.set_font_family(font_family)
         setattr(Config.LyricConfig, "font_family", font_family)
+
+    def translation_font_change_event(self):
+        """修改译文字体事件"""
+        font_family = self.translation_font_comboBox.currentText()
+        self.lyric_window.set_translation_font_family(font_family)
+        setattr(Config.LyricConfig, "translation_font_family", font_family)
 
     def color_style_change_event(self):
         """修改歌词颜色方案事件"""

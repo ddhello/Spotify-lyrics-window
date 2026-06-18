@@ -40,6 +40,7 @@ class Config:
         display_mode: int = 0  # 0代表水平显示歌词，1代表竖直显示歌词
 
         font_family: str = "微软雅黑"
+        translation_font_family: str = "微软雅黑"
         font_size: int = 25
 
         is_always_front: bool = True
@@ -79,6 +80,9 @@ class Config:
 
         data = rtoml.load(SETTING_TOML_PATH)
         _load_config(cls, data)
+        lyric_config = data.get("LyricConfig", {})
+        if "font_family" in lyric_config and "translation_font_family" not in lyric_config:
+            cls.LyricConfig.translation_font_family = cls.LyricConfig.font_family
 
     @classmethod
     def save_config(cls):
